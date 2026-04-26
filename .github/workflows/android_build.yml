@@ -10,37 +10,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Java সেটআপ (অ্যান্ড্রয়েড বিল্ডের জন্য জরুরি)
-      - name: Set up JDK 17
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
+          distribution: 'zulu'
           java-version: '17'
-          distribution: 'temurin'
 
-      # Flutter সেটআপ
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0'
           channel: 'stable'
       
-      # প্রজেক্ট যদি ঠিকমতো না তৈরি হয় তবে তা ঠিক করা
-      - name: Create Scaffold
+      - name: Create project scaffolding
         run: |
           if [ ! -d "android" ]; then
-            flutter create . --platforms android
+            flutter create . --platforms android --org com.bdvpn.gateway
           fi
       
       - name: Install dependencies
         run: flutter pub get
 
-      # APK বিল্ড করা
       - name: Build APK
         run: flutter build apk --release
 
-      # APK ফাইলটি আপলোড করা (Path আপডেট করা হয়েছে)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: build/app/outputs/flutter-apk/*.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
