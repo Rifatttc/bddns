@@ -1,0 +1,24 @@
+# Codemagic configuration for BD-VPN
+workflows:
+  android-workflow:
+    name: Android Build
+    max_build_duration: 30
+    instance_type: mac_mini_m1
+    environment:
+      flutter: stable
+    scripts:
+      - name: Create project scaffolding
+        script: |
+          if [ ! -d "android" ]; then
+            flutter create . --platforms android
+          fi
+      - name: Flutter build APK
+        script: |
+          flutter pub get
+          flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
+    publishing:
+      email:
+        recipients:
+          - Rifatttc2016@gmail.com
