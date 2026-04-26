@@ -13,8 +13,17 @@ async function startServer() {
 
   const PORT = 3000;
 
+  app.use(express.json());
+
   // pairingCodes stores [code]: socketId
   const pairingCodes = new Map();
+
+  // --- API Routes ---
+  app.post("/api/pairing/generate", (req, res) => {
+    const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+    console.log(`Generated code for dashboard: ${code}`);
+    res.json({ code, hostId: "pending" });
+  });
 
   io.on("connection", (socket) => {
     console.log("New connection:", socket.id);
