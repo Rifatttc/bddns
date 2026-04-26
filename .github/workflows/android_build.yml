@@ -3,18 +3,24 @@ name: Build Android APK
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0'
           channel: 'stable'
+      
+      - name: Create Android project scaffolding
+        run: |
+          if [ ! -d "android" ]; then
+            flutter create . --platforms android
+          fi
       
       - name: Install dependencies
         run: flutter pub get
