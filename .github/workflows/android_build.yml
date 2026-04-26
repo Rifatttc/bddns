@@ -10,23 +10,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0'
           channel: 'stable'
+          cache: true
       
-      - name: Create Android project scaffolding
+      - name: Fix/Create Android Project
         run: |
-          if [ ! -d "android" ]; then
-            flutter create . --platforms android
-          fi
-      
+          # যদি অ্যান্ড্রয়েড ফোল্ডার না থাকে বা নষ্ট থাকে, তবে এটি নতুন করে তৈরি করবে
+          flutter create . --platforms android --overwrite
+          
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build APK (Release)
+        run: flutter build apk --release --split-per-abi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
