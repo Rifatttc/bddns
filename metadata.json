@@ -1,0 +1,6 @@
+{
+  "name": "BD-VPN Gateway",
+  "description": "Peer-to-peer VPN system for Bangladeshi expats to access geo-restricted apps via high-speed WireGuard tunnels and a signaling server.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
